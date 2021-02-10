@@ -1,64 +1,70 @@
 """
 Фабричный метод — это порождающий паттерн проектирования,
-который определяет общий интерфейс для создания объектов в суперклассе, позволяя подклассам изменять тип создаваемых объектов.
+который определяет общий интерфейс для создания объектов в суперклассе,
+позволяя подклассам изменять тип создаваемых объектов.
 
 """
 from abc import ABC, abstractmethod
 
 
-class Creator(ABC):
+class LogisticApp(ABC):
     @abstractmethod
     def factory_method(self):
         pass
 
-    def some_operation(self) -> str:
+    def deliver(self) -> str:
         # Вызываем фабричный метод, чтобы получить объект-продукт.
         product = self.factory_method()
 
         # Далее, работаем с этим продуктом.
-        result = f"Creator: The same creator's code has just worked with {product.operation()}"
-
+        result = (
+            f"Creator: The same creator's code has just worked with {product.deliver()}"
+        )
         return result
 
 
-class ConcreteCreator1(Creator):
-    def factory_method(self) -> "Product":
-        return ConcreteProduct1()
+class RoadLogistics(LogisticApp):
+    def factory_method(self) -> "Transport":
+        return Truck()
 
 
-class ConcreteCreator2(Creator):
-    def factory_method(self) -> "Product":
-        return ConcreteProduct2()
+class SeaLogistics(LogisticApp):
+    def factory_method(self) -> "Transport":
+        return Ship()
 
 
-class Product(ABC):
+class Transport(ABC):
     @abstractmethod
-    def operation(self) -> str:
+    def deliver(self) -> str:
         pass
 
 
-class ConcreteProduct1(Product):
-    def operation(self) -> str:
-        return f"Result of Concrete Product #1"
+class Truck(Transport):
+    # Concrete transport
+    def deliver(self) -> str:
+        return f"Deliver by Truck"
 
 
-class ConcreteProduct2(Product):
-    def operation(self) -> str:
-        return f"Result of Concrete Product #2"
+class Ship(Transport):
+    # Concrete transport
+    def deliver(self) -> str:
+        return f"Deliver by Ship"
 
 
-def client_code(creator: Creator):
+def client_code(creator: LogisticApp):
     print(
         f"Client: I'm not aware of the creator's class, but it still works.\n"
-        f"{creator.some_operation()}",
+        f"{creator.deliver()}",
         end="",
     )
 
 
 if __name__ == "__main__":
-    print("App: Launched with the ConcreteCreator1.")
-    client_code(ConcreteCreator1())
+    print("App: Launched with the RoadLogistics.")
+    road_logistics = RoadLogistics()
+    client_code(road_logistics)
     print("\n")
 
-    print("App: Launched with the ConcreteCreator2.")
-    client_code(ConcreteCreator2())
+    print("App: Launched with the SeaLogistics.")
+    sea_logistics = SeaLogistics()
+    client_code(sea_logistics)
