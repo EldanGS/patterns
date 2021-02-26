@@ -1,4 +1,4 @@
-""" tenant:
+""" Intent:
 Bridge pattern compose objects in tree structure.
 It decouples abstraction from implementation.
 Here abstraction represents the client from which the objects will be called.
